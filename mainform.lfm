@@ -1,12 +1,42 @@
 object frmMain: TfrmMain
-  Left = 221
+  Left = 2068
   Height = 385
-  Top = 237
+  Top = 53
   Width = 480
   Caption = 'Uzkeys v.0.1'
+  ClientHeight = 385
+  ClientWidth = 480
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.6.4.0'
+  object Memo1: TMemo
+    Left = 29
+    Height = 274
+    Top = 26
+    Width = 392
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 32
+    Height = 34
+    Top = 333
+    Width = 99
+    Caption = 'Button1'
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 175
+    Height = 36
+    Top = 331
+    Width = 110
+    Caption = 'Button2'
+    OnClick = Button2Click
+    TabOrder = 2
+  end
   object trayIcon: TTrayIcon
     PopUpMenu = mnuTray
     Icon.Data = {
@@ -63,10 +93,11 @@ object frmMain: TfrmMain
     end
     object mnuCyr: TMenuItem
       Caption = 'Кириллица Alt+У - Ў'
+      OnClick = mnuLatCyrClick
     end
     object mnuLat: TMenuItem
       Caption = 'Латиница Alt+O - Oʻ'
-      OnClick = mnuLatClick
+      OnClick = mnuLatCyrClick
     end
     object mnuSep2: TMenuItem
       Caption = '-'
@@ -80,5 +111,15 @@ object frmMain: TfrmMain
     object mnuExit: TMenuItem
       Caption = 'Выход'
     end
+  end
+  object IdleTimer1: TIdleTimer
+    AutoEnabled = True
+    AutoEndEvent = itaOnIdleEnd
+    Enabled = False
+    Interval = 300
+    OnTimer = IdleTimer1Timer
+    OnStartTimer = IdleTimer1StartTimer
+    left = 440
+    top = 336
   end
 end
