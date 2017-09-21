@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  Menus, ComCtrls, StdCtrls, Windows, MouseAndKeyInput, LCLType, LazUTF8;
+  Menus, ComCtrls, StdCtrls, Windows, MouseAndKeyInput, LCLType, Grids, LazUTF8,
+  winsendkeys;
 
 type
   THotKeyId = (
@@ -29,9 +30,15 @@ type
   { TfrmMain }
 
   TfrmMain = class(TForm)
-    Button1: TButton;
+    btnOK: TButton;
     Button2: TButton;
     IdleTimer1: TIdleTimer;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    lblGithub: TLabel;
+    lblMailto: TLabel;
     Memo1: TMemo;
     mnuSep0: TMenuItem;
     mnuStartup: TMenuItem;
@@ -42,101 +49,33 @@ type
     mnuSep3: TMenuItem;
     mnuHelp: TMenuItem;
     mnuTray: TPopupMenu;
+    StringGrid1: TStringGrid;
     trayIcon: TTrayIcon;
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure IdleTimer1StartTimer(Sender: TObject);
-    procedure IdleTimer1Timer(Sender: TObject);
+    procedure lblGithubClick(Sender: TObject);
+    procedure lblMailtoClick(Sender: TObject);
+    procedure mnuExitClick(Sender: TObject);
+    procedure mnuHelpClick(Sender: TObject);
     procedure mnuLatCyrClick(Sender: TObject);
-    procedure mnuLatClick(Sender: TObject);
     procedure trayIconDblClick(Sender: TObject);
   private
     Started: Boolean;
-    KeyMsgQueue: array[0..999] of THotKeyId;
-    QueueLen: Integer;
-    QueueHead: Integer;
-    QueueTail: Integer;
-    procedure AddKeyToQueue(hk: THotKeyId);
-    function PopKeyFromQueue(var hk: THotKeyId): Boolean;
+    CanQuit: Boolean;
     procedure HKMessage(var Msg: TMessage); message WM_HOTKEY;
-    procedure OnIdle(Sender: TObject; var Done: Boolean);
     procedure SendVK(Data: PtrInt);
   public
     procedure RegisterHotKeys;
     procedure UnregisterHotKeys;
     procedure TryRegisterHotKey(HK: THotKeyId; KMod, VK: Cardinal;
       errMsg: String; var err: String);
+    procedure Quit;
   end;
 
 var
   frmMain: TfrmMain;
-
-const
-  {$EXTERNALSYM INPUT_MOUSE}
-  INPUT_MOUSE = 0;
-  {$EXTERNALSYM INPUT_KEYBOARD}
-  INPUT_KEYBOARD = 1;
-  {$EXTERNALSYM INPUT_HARDWARE}
-  INPUT_HARDWARE = 2;
-
-const
-  {$EXTERNALSYM KEYEVENTF_EXTENDEDKEY}
-  KEYEVENTF_EXTENDEDKEY = 1;
-  {$EXTERNALSYM KEYEVENTF_KEYUP}
-  KEYEVENTF_KEYUP       = 2;
-  {$EXTERNALSYM KEYEVENTF_UNICODE}
-  KEYEVENTF_UNICODE     = 4;
-  {$EXTERNALSYM KEYEVENTF_SCANCODE}
-  KEYEVENTF_SCANCODE    = 8;
-
-type
-  PMouseInput = ^TMouseInput;
-  {$EXTERNALSYM tagMOUSEINPUT}
-  tagMOUSEINPUT = record
-    dx: Longint;
-    dy: Longint;
-    mouseData: DWORD;
-    dwFlags: DWORD;
-    time: DWORD;
-    dwExtraInfo: ULONG_PTR;
-  end;
-  TMouseInput = tagMOUSEINPUT;
-
-  PKeybdInput = ^TKeybdInput;
-  {$EXTERNALSYM tagKEYBDINPUT}
-  tagKEYBDINPUT = record
-    wVk: WORD;
-    wScan: WORD;
-    dwFlags: DWORD;
-    time: DWORD;
-    dwExtraInfo: ULONG_PTR;
-  end;
-  TKeybdInput = tagKEYBDINPUT;
-
-  PHardwareInput = ^THardwareInput;
-  {$EXTERNALSYM tagHARDWAREINPUT}
-  tagHARDWAREINPUT = record
-    uMsg: DWORD;
-    wParamL: WORD;
-    wParamH: WORD;
-  end;
-  THardwareInput = tagHARDWAREINPUT;
-
-  PInput = ^TInput;
-  {$EXTERNALSYM tagINPUT}
-  tagINPUT = record
-    Itype: DWORD;
-    case Integer of
-      0: (mi: TMouseInput);
-      1: (ki: TKeybdInput);
-      2: (hi: THardwareInput);
-  end;
-  TInput = tagINPUT;
-
-{$EXTERNALSYM SendInput}
-function SendInput(cInputs: UINT; var pInputs: TInput; cbSize: Integer): UINT; stdcall; external 'user32.dll' name 'SendInput';
 
 implementation
 
@@ -144,123 +83,14 @@ implementation
 
 { TfrmMain }
 
-procedure TfrmMain.mnuLatClick(Sender: TObject);
-begin
-
-end;
-
 procedure TfrmMain.trayIconDblClick(Sender: TObject);
 begin
   Visible := not IsVisible;
 end;
 
-procedure TfrmMain.AddKeyToQueue(hk: THotKeyId);
-begin
-  if QueueLen < 1000 then
-  begin
-    Inc(QueueLen);
-    QueueTail := (QueueTail + 1) mod 1000;
-    KeyMsgQueue[QueueTail] := hk;
-  end;
-end;
-
-function TfrmMain.PopKeyFromQueue(var hk: THotKeyId): Boolean;
-begin
-  Result := False;
-  if QueueLen > 0 then
-  begin
-    hk := KeyMsgQueue[QueueHead];
-    Result := True;
-    QueueHead := (QueueHead + 1) mod 1000;
-    Dec(QueueLen);
-  end;
-end;
-
 procedure TfrmMain.HKMessage(var Msg: TMessage);
 begin
-  Memo1.Lines.Add(IntToStr(Msg.lParam) + ' ' + IntToStr(Msg.wParam));
-  (*if (Msg.wParam >= Cardinal(Low(THotKeyId))) and (Msg.wParam <= Cardinal(High(THotKeyId))) then begin
-    AddKeyToQueue(THotKeyId(Msg.wParam));
-  end;*)
   Application.QueueAsyncCall(@SendVK, Msg.wParam);
-end;
-
-procedure TfrmMain.OnIdle(Sender: TObject; var Done: Boolean);
-var hk: THotKeyId;
-begin
-  if PopKeyFromQueue(hk) then
-  begin
-    KeyInput.Unapply([ssAlt]);
-    //KeyInput.Press('ЎЎқ');
-    KeyInput.Press('TEST');
-    //keybd_event(VkKeyScan('o'), 0, KEYEVENTF_KEYUP, 0);
-    //keybd_event(VkKeyScan('k'),0 ,KEYEVENTF_KEYUP, 0);
-  end;
-end;
-
-procedure SendKeys(const S: UnicodeString);
-var
-  InputEvents: PInput;
-  I, J: Integer;
-begin
-  if S = '' then Exit;
-  GetMem(InputEvents, SizeOf(TInput) * (Length(S) * 2 + 4));
-
-  try
-    J := 0;
-    InputEvents[J].Itype := INPUT_KEYBOARD;
-    InputEvents[J].ki.wVk := VK_LMENU;
-    InputEvents[J].ki.wScan := 0;
-    InputEvents[J].ki.dwFlags := 0;
-    InputEvents[J].ki.time := 0;
-    InputEvents[J].ki.dwExtraInfo := 0;
-    Inc(J);
-    InputEvents[J].Itype := INPUT_KEYBOARD;
-    InputEvents[J].ki.wVk := VK_LMENU;
-    InputEvents[J].ki.wScan := 0;
-    InputEvents[J].ki.dwFlags := KEYEVENTF_KEYUP;
-    InputEvents[J].ki.time := 0;
-    InputEvents[J].ki.dwExtraInfo := 0;
-    Inc(J);
-     InputEvents[J].Itype := INPUT_KEYBOARD;
-    InputEvents[J].ki.wVk := VK_RMENU;
-    InputEvents[J].ki.wScan := 0;
-    InputEvents[J].ki.dwFlags := 0;
-    InputEvents[J].ki.time := 0;
-    InputEvents[J].ki.dwExtraInfo := 0;
-    Inc(J);
-    InputEvents[J].Itype := INPUT_KEYBOARD;
-    InputEvents[J].ki.wVk := VK_RMENU;
-    InputEvents[J].ki.wScan := 0;
-    InputEvents[J].ki.dwFlags := KEYEVENTF_KEYUP;
-    InputEvents[J].ki.time := 0;
-    InputEvents[J].ki.dwExtraInfo := 0;
-    Inc(J);
-    for I := 1 to Length(S) do
-    begin
-      InputEvents[J].Itype := INPUT_KEYBOARD;
-      InputEvents[J].ki.wVk := 0;
-      InputEvents[J].ki.wScan := Ord(S[I]);
-      InputEvents[J].ki.dwFlags := KEYEVENTF_UNICODE;
-      InputEvents[J].ki.time := 0;
-      InputEvents[J].ki.dwExtraInfo := 0;
-      Inc(J);
-      InputEvents[J].Itype := INPUT_KEYBOARD;
-      InputEvents[J].ki.wVk := 0;
-      InputEvents[J].ki.wScan := Ord(S[I]);
-      InputEvents[J].ki.dwFlags := KEYEVENTF_UNICODE or KEYEVENTF_KEYUP;
-      InputEvents[J].ki.time := 0;
-      InputEvents[J].ki.dwExtraInfo := 0;
-      Inc(J);
-    end;
-    I := SendInput(J, InputEvents[0], SizeOf(TInput));
-    if I = 0 then
-    begin
-      J := GetLastError;
-    end;
-  finally
-    FreeMem(InputEvents);
-  end;
 end;
 
 procedure TfrmMain.SendVK(Data: PtrInt);
@@ -268,15 +98,6 @@ var s: UnicodeString; i: Integer; us: String;
     CAPS: Boolean; dia1, dia2: String;
     hk: THotKeyId;
 begin
-  //KeyInput.Unapply([ssAlt]);
-  //KeyInput.Press('ЎЎқ');
-  //KeyInput.Press('TEST');
-  //SendMessage(GetActiveWindow, WM_IME_KEYDOWN, Ord('s'), 0);
-  //SendMessage(GetActiveWindow, WM_IME_KEYDOWN, Ord('t'), 0);
-  //keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
-  //SendMessage(GetActiveWindow, WM_SYSKEYUP, VK_MENU, 0);
-
-  //keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY, 0);
   dia1 := 'ʻ';
   dia2 := 'ʼ';
   CAPS := ((GetKeyState(VK_CAPITAL) and 1) <> 0);
@@ -363,17 +184,6 @@ begin
   begin
     UnregisterHotKey(Handle, Integer(I));
   end;
-  (* UnregisterHotKey(Handle, Integer(hkLatShiftO));
-  UnregisterHotKey(Handle, Integer(hkLatG);
-  UnregisterHotKey(Handle, hkLatShiftG);
-  UnregisterHotKey(Handle, hkCyrY);
-  UnregisterHotKey(Handle, hkCyrShiftY);
-  UnregisterHotKey(Handle, hkCyrK);
-  UnregisterHotKey(Handle, hkCyrShiftK);
-  UnregisterHotKey(Handle, hkCyrF);
-  UnregisterHotKey(Handle, hkCyrShiftF);
-  UnregisterHotKey(Handle, hkCyrX);
-  UnregisterHotKey(Handle, hkCyrShiftX);*)
 end;
 
 procedure TfrmMain.TryRegisterHotKey(HK: THotKeyId; KMod, VK: Cardinal;
@@ -388,20 +198,31 @@ begin
   end;
 end;
 
+procedure TfrmMain.Quit;
+begin
+  CanQuit := True;
+  Close;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   trayIcon.Visible := True;
-  Application.OnIdle := TIdleEvent(@OnIdle);
 end;
 
-procedure TfrmMain.Button1Click(Sender: TObject);
+procedure TfrmMain.btnOKClick(Sender: TObject);
 begin
-  RegisterHotKeys;
+  Hide;
 end;
 
-procedure TfrmMain.Button2Click(Sender: TObject);
+procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  UnregisterHotKeys;
+  if CanQuit then
+  begin
+    UnregisterHotKeys;
+    CloseAction := caFree;
+  end else begin
+    CloseAction := caHide;
+  end;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
@@ -413,14 +234,24 @@ begin
   end;
 end;
 
-procedure TfrmMain.IdleTimer1StartTimer(Sender: TObject);
+procedure TfrmMain.lblGithubClick(Sender: TObject);
 begin
-
+  ShellExecute(Handle, 'open', 'https://github.com/pdima88/uzkeys','','',0);
 end;
 
-procedure TfrmMain.IdleTimer1Timer(Sender: TObject);
+procedure TfrmMain.lblMailtoClick(Sender: TObject);
 begin
+  ShellExecute(Handle, 'open', 'mailto:pdima88@gmail.com?subject=Uzkeys%200.1','','',0);
+end;
 
+procedure TfrmMain.mnuExitClick(Sender: TObject);
+begin
+  Quit;
+end;
+
+procedure TfrmMain.mnuHelpClick(Sender: TObject);
+begin
+  Show;
 end;
 
 procedure TfrmMain.mnuLatCyrClick(Sender: TObject);

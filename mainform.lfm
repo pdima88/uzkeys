@@ -1,41 +1,222 @@
 object frmMain: TfrmMain
-  Left = 2068
-  Height = 385
-  Top = 53
-  Width = 480
-  Caption = 'Uzkeys v.0.1'
-  ClientHeight = 385
-  ClientWidth = 480
+  Left = 1796
+  Height = 433
+  Top = 136
+  Width = 408
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Uzkeys'
+  ClientHeight = 433
+  ClientWidth = 408
+  Icon.Data = {
+    7E04000000000100010010100000010020006804000016000000280000001000
+    0000200000000100200000000000000000000000000000000000000000000000
+    00000F0E0E11535353605C5C5B6D5A5A596B5B5A596B5B5A596B5B5A5A6B5B5A
+    5A6B5B5B5A6B5B5B5A6B5B5B5A6B5B5B5A6B5B5A5A6B5E5D5D6E3F3E3E500101
+    0105A1A1A1A2FFFFFFFFFFFEFDFFFEFCFAFFFEFCFAFFFEFCFAFFFFFCFBFFFFFD
+    FCFFFFFEFDFFFFFEFDFFFFFEFDFFFFFEFDFFFFFEFDFFFBF8F7FFF1EEEDFF4E4D
+    4D65D5D4D4D1FFFFFFFFF5F4F4FFF0EEEEFFF0EEEEFFF0EEEEFFF0EFEEFFF0EF
+    EEFFF1EFEFFFF1EFEFFFF1EFEFFFF1EFEFFFF0EFEEFFE6E3E1FFE7E4E3FF7777
+    7790CCCBCAD1F9F7F7FFECEBEBFFEBEAEAFFEBEAEAFFA1A1A1FF888888FFC2C1
+    C1FFEBEAEAFFEBEAEAFFEBEAEAFFEBEAEAFFECEBEBFFE8E7E7FFDCDCDCFF7070
+    7090CCCBCAD1F7F5F4FFEDECECFFECEBEBFFECEBEBFFA1A1A1FF787878FF6F6F
+    6FFFDBDADAFFECEBEBFFECEBEBFFECEBEBFFEDECECFFE9E8E8FFDADADAFF6F6F
+    6F90CCCBCAD1F7F5F5FFEDEDEDFFECECECFFECECECFFECECECFFD3D3D3FF6767
+    67FF999999FFECECECFFECECECFFECECECFFEDEDEDFFE8E8E8FFD9D9D9FF6E6E
+    6E90CDCBCBD1F8F6F6FFEEEDEEFFEDEDEDFFEDEDEDFFEDEDEDFFDCDCDCFF6767
+    67FF6F6F6FFFE5E5E5FFEDEDEDFFEDEDEDFFEEEEEEFFE9E9E9FFD7D7D7FF6E6E
+    6E90CECCCBD1F9F7F6FFEFEEEDFFEEEDEDFFEEEDEDFFEEEDEDFF9A9999FF6F6F
+    6FFF676767FFABAAAAFFEEEDEDFFEEEDEDFFEFEEEEFFE9E8E9FFD6D6D6FF6D6D
+    6D90CFCDCCD1FAF8F8FFEFEFF0FFEFEFEFFFEFEFEFFFDEDEDEFF676767FFA3A3
+    A3FF929292FF707070FFEFEFEFFFEFEFEFFFF0F0F0FFEAEAEAFFD3D4D4FF6C6D
+    6D90CFCECDD1FBF9F8FFF0F0F0FFF0F0F0FFF0F0F0FF929292FF676767FFDFDF
+    DFFFBCBCBCFF676767FFBCBCBCFFF0F0F0FFF1F1F1FFEAEAEAFFD2D2D2FF6C6C
+    6C90CFCECDD1FBF9F8FFF1F0F0FFF1F0F0FFCECECEFF676767FF9B9B9BFFF1F0
+    F0FFF1F0F0FF707070FF787878FFF1F0F0FFF2F1F1FFEBEAEAFFD0D1D1FF6B6B
+    6B90CFCECDD1FBF9F9FFF1F1F1FFF1F1F1FF8A8A8AFF676767FFE0E0E0FFF1F1
+    F1FFF1F1F1FFA4A4A4FF676767FFCECECEFFF2F2F2FFEBEBEBFFCFCFCFFF6A6A
+    6A90CFCECDD1FCFAF9FFF2F2F2FFF2F2F2FFCFCFCFFFD8D8D8FFF2F2F2FFF2F2
+    F2FFF2F2F2FFE9E9E9FFCFCFCFFFE1E1E1FFF3F3F3FFECECECFFCECECEFF6A6A
+    6A90D0CECDD1F6F5F4FFF4F4F4FFF6F6F6FFF6F6F6FFF6F6F6FFAFAEAEFF8282
+    82FF828282FFC8C8C8FFF5F5F5FFF5F5F5FFF8F7F7FFE8E7E7FFC5C5C5FF6A6A
+    6A91C2C0C0CCE6E4E3FFDDDCDCFFDDDDDDFFDCDCDCFFDCDCDCFFA9A9A9FFDEDE
+    DEFFD7D7D7FFB2B2B2FFE0E0E0FFE0E0E0FFE1E1E1FFC0C0C0FFBBBBBBFF6565
+    6588D1CFCF62D8D6D6ECC7C7C7EFC1C1C1EDC1C1C1EDC1C1C1EDC2C2C2EDC4C4
+    C4EDC6C6C6EDC7C8C8EDC8C8C8EDC8C8C8EDC8C8C8EDC5C5C5F1A2A2A2D61F1F
+    1F2C0000AC410000AC410000AC410000AC410000AC410000AC410000AC410000
+    AC410000AC410000AC410000AC410000AC410000AC410000AC410000AC410000
+    AC41
+  }
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.6.4.0'
-  object Memo1: TMemo
-    Left = 29
-    Height = 274
-    Top = 26
-    Width = 392
-    Lines.Strings = (
-      'Memo1'
-    )
-    TabOrder = 0
+  object Label1: TLabel
+    Left = 16
+    Height = 15
+    Top = 16
+    Width = 125
+    Caption = 'Версия: 0.1 (22.09.2017)'
+    ParentColor = False
   end
-  object Button1: TButton
-    Left = 32
-    Height = 34
-    Top = 333
-    Width = 99
-    Caption = 'Button1'
-    OnClick = Button1Click
+  object Label2: TLabel
+    Left = 16
+    Height = 15
+    Top = 40
+    Width = 136
+    Caption = '© 2017 Пучкин Дмитрий'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 16
+    Height = 48
+    Top = 72
+    Width = 384
+    AutoSize = False
+    Caption = 'Утилита Uzkeys предназначена для быстрого набора символов узбекского алфавита на кириллице и латинице без необходимости установки узбекской раскладки'
+    ParentColor = False
+    WordWrap = True
+  end
+  object Label4: TLabel
+    Left = 16
+    Height = 64
+    Top = 128
+    Width = 384
+    AutoSize = False
+    Caption = 'Для набора специфических символов узбекского алфавита используется клавиша Alt + похожая буква, т.е. чтобы набрать к примеру букву ў нажмите Alt+У, для заглавных букв дополнительно зажмите Shift или переключите Caps Lock'
+    ParentColor = False
+    WordWrap = True
+  end
+  object StringGrid1: TStringGrid
+    Left = 16
+    Height = 184
+    Top = 200
+    Width = 384
+    ColCount = 3
+    Columns = <    
+      item
+        Alignment = taCenter
+        Title.Alignment = taCenter
+        Title.Caption = 'Английская раскладка'
+        Width = 150
+      end    
+      item
+        Alignment = taCenter
+        Title.Alignment = taCenter
+        Title.Caption = 'Русская раскладка'
+        Width = 150
+      end>
+    RowCount = 8
+    TabOrder = 0
+    ColWidths = (
+      79
+      150
+      150
+    )
+    Cells = (
+      22
+      0
+      1
+      'Ў , ў'
+      0
+      2
+      'Қ , қ'
+      0
+      3
+      'Ғ , ғ'
+      0
+      4
+      'Ҳ ,ҳ'
+      0
+      5
+      'ʼ (апостроф)'
+      0
+      6
+      'Oʻ, oʻ'
+      0
+      7
+      'Gʻ, gʻ'
+      1
+      1
+      'Alt+Shift+E, Alt+E'
+      1
+      2
+      'Alt+Shift+R, Alt+R'
+      1
+      3
+      'Alt+Shift+U, Alt+U'
+      1
+      4
+      'Alt+Shift+[,  Alt+['
+      1
+      5
+      'Alt+`'
+      1
+      6
+      'Alt+Shift+O, Alt+O'
+      1
+      7
+      'Alt+Shift+G, Alt+G'
+      2
+      0
+      'Русская раскладка'
+      2
+      1
+      'Alt+Shift+У, Alt+У'
+      2
+      2
+      'Alt+Shift+К, Alt+К'
+      2
+      3
+      'Alt+Shift+Г, Alt+Г'
+      2
+      4
+      'Alt+Shift+Х, Alt+Х'
+      2
+      5
+      'Alt+ё'
+      2
+      6
+      'Alt+Shift+Щ, Alt+Щ'
+      2
+      7
+      'Alt+Shift+П, Alt+П'
+    )
+  end
+  object lblMailto: TLabel
+    Cursor = crHandPoint
+    Left = 168
+    Height = 15
+    Top = 40
+    Width = 114
+    Caption = 'pdima88@gmail.com'
+    Font.Color = clHotLight
+    Font.Style = [fsUnderline]
+    ParentColor = False
+    ParentFont = False
+    OnClick = lblMailtoClick
+  end
+  object btnOK: TButton
+    Left = 168
+    Height = 25
+    Top = 396
+    Width = 75
+    Caption = 'ОК'
+    OnClick = btnOKClick
     TabOrder = 1
   end
-  object Button2: TButton
-    Left = 175
-    Height = 36
-    Top = 331
-    Width = 110
-    Caption = 'Button2'
-    OnClick = Button2Click
-    TabOrder = 2
+  object lblGithub: TLabel
+    Cursor = crHandPoint
+    Left = 168
+    Height = 15
+    Top = 16
+    Width = 193
+    Caption = 'https://github.com/pdima88/uzkeys'
+    Font.Color = clHotLight
+    Font.Style = [fsUnderline]
+    ParentColor = False
+    ParentFont = False
+    OnClick = lblGithubClick
   end
   object trayIcon: TTrayIcon
     PopUpMenu = mnuTray
@@ -79,12 +260,12 @@ object frmMain: TfrmMain
       0000
     }
     OnDblClick = trayIconDblClick
-    left = 328
-    top = 336
+    left = 304
+    top = 40
   end
   object mnuTray: TPopupMenu
-    left = 392
-    top = 336
+    left = 360
+    top = 40
     object mnuStartup: TMenuItem
       Caption = 'Автоматически запускать при старте Windows'
     end
@@ -104,22 +285,14 @@ object frmMain: TfrmMain
     end
     object mnuHelp: TMenuItem
       Caption = 'Справка / О программе...'
+      OnClick = mnuHelpClick
     end
     object mnuSep3: TMenuItem
       Caption = '-'
     end
     object mnuExit: TMenuItem
       Caption = 'Выход'
+      OnClick = mnuExitClick
     end
-  end
-  object IdleTimer1: TIdleTimer
-    AutoEnabled = True
-    AutoEndEvent = itaOnIdleEnd
-    Enabled = False
-    Interval = 300
-    OnTimer = IdleTimer1Timer
-    OnStartTimer = IdleTimer1StartTimer
-    left = 440
-    top = 336
   end
 end
