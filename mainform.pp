@@ -7,6 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   Menus, ComCtrls, StdCtrls, Windows, MouseAndKeyInput, LCLType, Grids, LazUTF8,
+  registry,
   winsendkeys;
 
 type
@@ -60,19 +61,25 @@ type
     procedure mnuExitClick(Sender: TObject);
     procedure mnuHelpClick(Sender: TObject);
     procedure mnuLatCyrClick(Sender: TObject);
+    procedure mnuStartupClick(Sender: TObject);
     procedure trayIconDblClick(Sender: TObject);
   private
     Started: Boolean;
     CanQuit: Boolean;
+    reg: TRegistry;
     procedure HKMessage(var Msg: TMessage); message WM_HOTKEY;
     procedure SendVK(Data: PtrInt);
   public
+    procedure RegisterStartup(AStartup: Boolean);
     procedure RegisterHotKeys;
     procedure UnregisterHotKeys;
     procedure TryRegisterHotKey(HK: THotKeyId; KMod, VK: Cardinal;
       errMsg: String; var err: String);
     procedure Quit;
   end;
+const APP_REG_KEY = 'Software\pdima88\uzkeys\';
+const STARTUP_REG_KEY = 'Software\Microsoft\Windows\CurrentVersion\Run\';
+const STARTUP_REG_VALUE = 'uzkeys';
 
 var
   frmMain: TfrmMain;
@@ -148,10 +155,22 @@ begin
 
 end;
 
-procedure TfrmMain.RegisterHotKeys;
-var err: String;
+procedure TfrmMain.RegisterStartup(AStartup: Boolean);
 begin
-  err := '';
+  reg.Access := KEY_WRITE;
+  if reg.OpenKey(STARTUP_REG_KEY, True) then
+  begin
+       if AStartup then reg.WriteString(STARTUP_REG_VALUE, ParamStr(0))
+       else reg.DeleteValue(STARTUP_REG_VALUE);
+       reg.CloseKey;
+  end;
+  reg.Access := KEY_READ;
+end;
+
+procedure TfrmMain.RegisterHotKeys;
+var err: String; Cyr, Lat: Integer;
+begin
+  err := ''; Cyr := 0; Lat := 0;
   if mnuLat.Checked then
   begin
     TryRegisterHotKey(hkLatApostrophe, MOD_ALT, VkKeyScan('`'), 'Alt+`', err);
@@ -159,6 +178,7 @@ begin
     TryRegisterHotKey(hkLatShiftO, MOD_ALT + MOD_SHIFT, VkKeyScan('o'), 'Alt+Shift+O', err);
     TryRegisterHotKey(hkLatG, MOD_ALT, VkKeyScan('g'), 'Alt+G', err);
     TryRegisterHotKey(hkLatShiftG, MOD_ALT + MOD_SHIFT, VkKeyScan('g'), 'Alt+Shift+G', err);
+    Lat := 1;
   end;
   if mnuCyr.Checked then
   begin
@@ -170,7 +190,16 @@ begin
     TryRegisterHotKey(hkCyrShiftF, MOD_ALT + MOD_SHIFT, VkKeyScan('u'), 'Alt+Shift+Г', err);
     TryRegisterHotKey(hkCyrX, MOD_ALT, VkKeyScan('['), 'Alt+Х', err);
     TryRegisterHotKey(hkCyrShiftX, MOD_ALT + MOD_SHIFT, VkKeyScan('['), 'Alt+Shift+Х', err);
+    Cyr := 1;
   end;
+  reg.Access := KEY_WRITE;
+  if reg.OpenKey(APP_REG_KEY, True) then
+  begin
+    reg.WriteInteger('Cyr', Cyr);
+    reg.WriteInteger('Lat', Lat);
+    reg.CloseKey;
+  end;
+  reg.Access := KEY_READ;
   if err <> '' then
   begin
     MessageDlg('Не удалось зарегистрировать горячие клавиши: '+err, mtWarning, [mbOK], 0);
@@ -207,6 +236,42 @@ end;
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   trayIcon.Visible := True;
+  reg := TRegistry.Create(KEY_READ);
+  reg.RootKey := HKEY_CURRENT_USER;
+  if reg.OpenKey(STARTUP_REG_KEY, False) then
+  begin
+    if reg.ValueExists(STARTUP_REG_VALUE) and
+       (Trim(LowerCase(reg.ReadString(STARTUP_REG_VALUE))) = Trim(LowerCase(ParamStr(0)))) then
+    begin
+      mnuStartup.Checked := True;
+    end;
+    reg.CloseKey;
+  end;
+  if not reg.KeyExists(APP_REG_KEY) then
+  begin
+    reg.Access:= KEY_WRITE;
+    if reg.OpenKey(APP_REG_KEY, True) then
+    begin
+         reg.WriteInteger('Cyr', 1);
+         reg.WriteInteger('Lat', 1);
+         reg.CloseKey;
+    end;
+    reg.Access := KEY_READ;
+  end;
+  if reg.OpenKey(APP_REG_KEY, False) then
+  begin
+    if Reg.ReadInteger('Cyr') <> 0 then mnuCyr.Checked := True;
+    if reg.ReadInteger('Lat') <> 0 then mnuLat.Checked := True;
+    Reg.CloseKey;
+  end;
+
+  RegisterHotKeys;
+
+  if ParamStr(1) = 'startup' then
+  begin
+    mnuStartup.Checked := True;
+    RegisterStartup(True);
+  end;
 end;
 
 procedure TfrmMain.btnOKClick(Sender: TObject);
@@ -262,6 +327,12 @@ begin
     UnregisterHotKeys;
     RegisterHotKeys;
   end;
+end;
+
+procedure TfrmMain.mnuStartupClick(Sender: TObject);
+begin
+  mnuStartup.Checked := not mnuStartup.Checked;
+  RegisterStartup(mnuStartup.Checked);
 end;
 
 end.

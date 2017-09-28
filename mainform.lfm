@@ -56,7 +56,7 @@ object frmMain: TfrmMain
     Height = 15
     Top = 16
     Width = 125
-    Caption = 'Версия: 0.1 (22.09.2017)'
+    Caption = 'Версия: 0.1 (28.09.2017)'
     ParentColor = False
   end
   object Label2: TLabel
@@ -268,6 +268,7 @@ object frmMain: TfrmMain
     top = 40
     object mnuStartup: TMenuItem
       Caption = 'Автоматически запускать при старте Windows'
+      OnClick = mnuStartupClick
     end
     object mnuSep0: TMenuItem
       Caption = '-'

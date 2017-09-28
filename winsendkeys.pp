@@ -80,13 +80,10 @@ procedure SendKeys(const S: UnicodeString);
 var
   InputEvents: PInput;
   I, J: Integer;
-begin
-  if S = '' then Exit;
-  GetMem(InputEvents, SizeOf(TInput) * (Length(S) * 2 + 4));
 
-  try
-    J := 0;
-    InputEvents[J].Itype := INPUT_KEYBOARD;
+  procedure AddLRAltSeq;
+  begin
+        InputEvents[J].Itype := INPUT_KEYBOARD;
     InputEvents[J].ki.wVk := VK_LMENU;
     InputEvents[J].ki.wScan := 0;
     InputEvents[J].ki.dwFlags := 0;
@@ -114,6 +111,15 @@ begin
     InputEvents[J].ki.time := 0;
     InputEvents[J].ki.dwExtraInfo := 0;
     Inc(J);
+  end;
+
+begin
+  if S = '' then Exit;
+  GetMem(InputEvents, SizeOf(TInput) * (Length(S) * 2 + 4));
+
+  try
+    J := 0;
+    AddLRAltSeq;
     for I := 1 to Length(S) do
     begin
       InputEvents[J].Itype := INPUT_KEYBOARD;
@@ -132,6 +138,7 @@ begin
       Inc(J);
     end;
     I := SendInput(J, InputEvents[0], SizeOf(TInput));
+    //SendMessage(GetActiveWindow, WM_ACTIVATE, WA_CLICKACTIVE, 0);
     if I = 0 then
     begin
       J := GetLastError;
