@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="8"/>
         <CursorPos X="36" Y="10"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="47"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -20,9 +20,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="253"/>
-        <CursorPos X="27" Y="273"/>
-        <UsageCount Value="41"/>
+        <TopLine Value="194"/>
+        <CursorPos X="120" Y="204"/>
+        <UsageCount Value="47"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -30,8 +30,9 @@
         <Filename Value="winsendkeys.pp"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
+        <TopLine Value="70"/>
         <CursorPos X="35" Y="123"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -40,14 +41,14 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="33" Y="14"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="18"/>
       </Unit3>
       <Unit4>
         <Filename Value="D:\lazarus\fpc\3.0.2\source\rtl\win\wininc\func.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="403"/>
         <CursorPos X="10" Y="417"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit4>
       <Unit5>
         <Filename Value="D:\lazarus\components\mouseandkeyinput\keyinputintf.pas"/>
@@ -55,7 +56,7 @@
         <EditorIndex Value="7"/>
         <TopLine Value="67"/>
         <CursorPos X="5" Y="82"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -64,7 +65,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="1129"/>
         <CursorPos X="62" Y="1144"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="19"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
@@ -72,13 +73,13 @@
         <EditorIndex Value="5"/>
         <TopLine Value="4319"/>
         <CursorPos X="6" Y="4333"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="19"/>
         <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="D:\lazarus\fpc\3.0.2\source\rtl\win32\windows.pp"/>
         <EditorIndex Value="4"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="19"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
@@ -87,7 +88,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="162"/>
         <CursorPos X="10" Y="176"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
@@ -95,14 +96,14 @@
         <EditorIndex Value="2"/>
         <TopLine Value="336"/>
         <CursorPos X="3" Y="350"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="D:\lazarus\fpc\3.0.2\source\packages\fcl-registry\src\registry.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit11>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">

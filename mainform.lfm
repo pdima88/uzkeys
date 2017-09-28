@@ -50,6 +50,7 @@ object frmMain: TfrmMain
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
+  Position = poScreenCenter
   LCLVersion = '1.6.4.0'
   object Label1: TLabel
     Left = 16
@@ -63,8 +64,8 @@ object frmMain: TfrmMain
     Left = 16
     Height = 15
     Top = 40
-    Width = 136
-    Caption = '© 2017 Пучкин Дмитрий'
+    Width = 134
+    Caption = 'Автор: Пучкин Дмитрий'
     ParentColor = False
   end
   object Label3: TLabel
@@ -138,49 +139,49 @@ object frmMain: TfrmMain
       'Gʻ, gʻ'
       1
       1
-      'Alt+Shift+E, Alt+E'
+      'Shift+Alt+E, Alt+E'
       1
       2
-      'Alt+Shift+R, Alt+R'
+      'Shift+Alt+R, Alt+R'
       1
       3
-      'Alt+Shift+U, Alt+U'
+      'Shift+Alt+U, Alt+U'
       1
       4
-      'Alt+Shift+[,  Alt+['
+      'Shift+Alt+[,  Alt+['
       1
       5
       'Alt+`'
       1
       6
-      'Alt+Shift+O, Alt+O'
+      'Shift+Alt+O, Alt+O'
       1
       7
-      'Alt+Shift+G, Alt+G'
+      'Shift+Alt+G, Alt+G'
       2
       0
       'Русская раскладка'
       2
       1
-      'Alt+Shift+У, Alt+У'
+      'Shift+Alt+У, Alt+У'
       2
       2
-      'Alt+Shift+К, Alt+К'
+      'Shift+Alt+К, Alt+К'
       2
       3
-      'Alt+Shift+Г, Alt+Г'
+      'Shift+Alt+Г, Alt+Г'
       2
       4
-      'Alt+Shift+Х, Alt+Х'
+      'Shift+Alt+Х, Alt+Х'
       2
       5
       'Alt+ё'
       2
       6
-      'Alt+Shift+Щ, Alt+Щ'
+      'Shift+Alt+Щ, Alt+Щ'
       2
       7
-      'Alt+Shift+П, Alt+П'
+      'Shift+Alt+П, Alt+П'
     )
   end
   object lblMailto: TLabel

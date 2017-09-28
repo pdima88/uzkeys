@@ -16,10 +16,12 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
+      <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="1"/>
+      <RevisionNr Value="3"/>
+      <BuildNr Value="5"/>
       <Language Value="0419"/>
-      <StringTable Comments="28.09.2017" CompanyName="pdima88" FileDescription="Утилита для быстрого набора символов узбекской кириллицы и латиницы без необходимости установки узбекской раскладки" InternalName="uzkeys" OriginalFilename="uzkeys.exe" ProductName="uzkeys" ProductVersion="0.1"/>
+      <StringTable Comments="28.09.2017" CompanyName="Пучкин Дмитрий (pdima88@gmail.com)" FileDescription="Быстрый набор символов узбекской кириллицы и латиницы без необходимости установки узбекской раскладки" InternalName="uzkeys" OriginalFilename="uzkeys.exe" ProductName="uzkeys" ProductVersion="0.1"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Default" Default="True"/>
